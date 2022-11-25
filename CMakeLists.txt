@@ -56,7 +56,7 @@ include(CMakePackageConfigHelpers)
 include(CMakeDependentOption)
 
 option(BUILD_SHARED_LIBS "Build Shared Libraries" OFF)
-option(BUILD_EXTERNAL "Build external dependencies in /External" ON)
+option(DILIGENT_GLSLANG_BUILD_EXTERNAL "Build external dependencies in /External" ON)
 
 set(LIB_TYPE STATIC)
 
@@ -121,8 +121,8 @@ if(ENABLE_GLSLANG_INSTALL AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND WI
     set(CMAKE_INSTALL_PREFIX "install" CACHE STRING "..." FORCE)
 endif()
 
-option(USE_CCACHE "Use ccache" OFF)
-if(USE_CCACHE)
+option(DILIGENT_GLSLANG_USE_CCACHE "Use ccache" OFF)
+if(DILIGENT_GLSLANG_USE_CCACHE)
     find_program(CCACHE_FOUND ccache)
     if(CCACHE_FOUND)
         set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
@@ -146,8 +146,8 @@ endif()
 
 if(WIN32)
     set(CMAKE_DEBUG_POSTFIX "d")
-    option(OVERRIDE_MSVCCRT "Overrides runtime of MSVC " ON)
-    if(MSVC AND OVERRIDE_MSVCCRT)
+    option(DILIGENT_GLSLANG_OVERRIDE_MSVCCRT "Overrides runtime of MSVC " OFF)
+    if(MSVC AND DILIGENT_GLSLANG_OVERRIDE_MSVCCRT)
         include(ChooseMSVCCRT.cmake)
     endif()
     add_definitions(-DGLSLANG_OSINCLUDE_WIN32)
@@ -312,7 +312,7 @@ else()
     endif()
 endif()
 
-if(BUILD_EXTERNAL AND IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/External)
+if(DILIGENT_GLSLANG_BUILD_EXTERNAL AND IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/External)
     find_host_package(PythonInterp 3 REQUIRED)
 
     # We depend on these for later projects, so they should come first.

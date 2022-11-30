@@ -72,52 +72,52 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-option(SKIP_GLSLANG_INSTALL "Skip installation" ${SKIP_GLSLANG_INSTALL})
-if(NOT ${SKIP_GLSLANG_INSTALL})
-  set(ENABLE_GLSLANG_INSTALL ON)
+option(DILIGENT_GLSLANG_SKIP_GLSLANG_INSTALL "Skip installation" ${DILIGENT_GLSLANG_SKIP_GLSLANG_INSTALL})
+if(NOT ${DILIGENT_GLSLANG_SKIP_GLSLANG_INSTALL})
+  set(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL ON)
 endif()
-option(ENABLE_SPVREMAPPER "Enables building of SPVRemapper" ON)
+option(DILIGENT_GLSLANG_ENABLE_SPVREMAPPER "Enables building of SPVRemapper" ON)
 
-option(ENABLE_GLSLANG_BINARIES "Builds glslangValidator and spirv-remap" ON)
+option(DILIGENT_GLSLANG_ENABLE_GLSLANG_BINARIES "Builds glslangValidator and spirv-remap" ON)
 
-option(ENABLE_GLSLANG_JS
+option(DILIGENT_GLSLANG_ENABLE_GLSLANG_JS
     "If using Emscripten, build glslang.js. Otherwise, builds a sample executable for binary-size testing." OFF)
-CMAKE_DEPENDENT_OPTION(ENABLE_GLSLANG_WEBMIN
+CMAKE_DEPENDENT_OPTION(DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN
     "Reduces glslang to minimum needed for web use"
-    OFF "ENABLE_GLSLANG_JS"
+    OFF "DILIGENT_GLSLANG_ENABLE_GLSLANG_JS"
     OFF)
-CMAKE_DEPENDENT_OPTION(ENABLE_GLSLANG_WEBMIN_DEVEL
-    "For ENABLE_GLSLANG_WEBMIN builds, enables compilation error messages"
-    OFF "ENABLE_GLSLANG_WEBMIN"
+CMAKE_DEPENDENT_OPTION(DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN_DEVEL
+    "For DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN builds, enables compilation error messages"
+    OFF "DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN"
     OFF)
-CMAKE_DEPENDENT_OPTION(ENABLE_EMSCRIPTEN_SINGLE_FILE
+CMAKE_DEPENDENT_OPTION(DILIGENT_GLSLANG_ENABLE_EMSCRIPTEN_SINGLE_FILE
     "If using Emscripten, enables SINGLE_FILE build"
-    OFF "ENABLE_GLSLANG_JS AND EMSCRIPTEN"
+    OFF "DILIGENT_GLSLANG_ENABLE_GLSLANG_JS AND EMSCRIPTEN"
     OFF)
-CMAKE_DEPENDENT_OPTION(ENABLE_EMSCRIPTEN_ENVIRONMENT_NODE
+CMAKE_DEPENDENT_OPTION(DILIGENT_GLSLANG_ENABLE_EMSCRIPTEN_ENVIRONMENT_NODE
     "If using Emscripten, builds to run on Node instead of Web"
-    OFF "ENABLE_GLSLANG_JS AND EMSCRIPTEN"
+    OFF "DILIGENT_GLSLANG_ENABLE_GLSLANG_JS AND EMSCRIPTEN"
     OFF)
 
-CMAKE_DEPENDENT_OPTION(ENABLE_HLSL
+CMAKE_DEPENDENT_OPTION(DILIGENT_GLSLANG_ENABLE_HLSL
     "Enables HLSL input support"
-    ON "NOT ENABLE_GLSLANG_WEBMIN"
+    ON "NOT DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN"
     OFF)
 
-option(ENABLE_RTTI "Enables RTTI" OFF)
-option(ENABLE_EXCEPTIONS "Enables Exceptions" OFF)
-option(ENABLE_OPT "Enables spirv-opt capability if present" ON)
+option(DILIGENT_GLSLANG_ENABLE_RTTI "Enables RTTI" OFF)
+option(DILIGENT_GLSLANG_ENABLE_EXCEPTIONS "Enables Exceptions" ON)
+option(DILIGENT_GLSLANG_ENABLE_OPT "Enables spirv-opt capability if present" ON)
 
 if(MINGW OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU"))
     # Workaround for CMake behavior on Mac OS with gcc, cmake generates -Xarch_* arguments
     # which gcc rejects
-    option(ENABLE_PCH "Enables Precompiled header" OFF)
+    option(DILIGENT_GLSLANG_ENABLE_PCH "Enables Precompiled header" OFF)
 else()
-    option(ENABLE_PCH "Enables Precompiled header" ON)
+    option(DILIGENT_GLSLANG_ENABLE_PCH "Enables Precompiled header" ON)
 endif()
-option(ENABLE_CTEST "Enables testing" ON)
+option(DILIGENT_GLSLANG_ENABLE_CTEST "Enables testing" ON)
 
-if(ENABLE_GLSLANG_INSTALL AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND WIN32)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND WIN32)
     set(CMAKE_INSTALL_PREFIX "install" CACHE STRING "..." FORCE)
 endif()
 
@@ -129,17 +129,17 @@ if(DILIGENT_GLSLANG_USE_CCACHE)
     endif()
 endif()
 
-if(ENABLE_CTEST)
+if(DILIGENT_GLSLANG_ENABLE_CTEST)
     include(CTest)
 endif()
 
-if(ENABLE_HLSL)
+if(DILIGENT_GLSLANG_ENABLE_HLSL)
     add_definitions(-DENABLE_HLSL)
 endif()
 
-if(ENABLE_GLSLANG_WEBMIN)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN)
     add_definitions(-DGLSLANG_WEB)
-    if(ENABLE_GLSLANG_WEBMIN_DEVEL)
+    if(DILIGENT_GLSLANG_ENABLE_GLSLANG_WEBMIN_DEVEL)
         add_definitions(-DGLSLANG_WEB_DEVEL)
     endif()
 endif()
@@ -161,10 +161,10 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     add_compile_options(-Wall -Wmaybe-uninitialized -Wuninitialized -Wunused -Wunused-local-typedefs
                         -Wunused-parameter -Wunused-value  -Wunused-variable -Wunused-but-set-parameter -Wunused-but-set-variable -fno-exceptions)
     add_compile_options(-Wno-reorder)  # disable this from -Wall, since it happens all over.
-    if(NOT ENABLE_RTTI)
+    if(NOT DILIGENT_GLSLANG_ENABLE_RTTI)
         add_compile_options(-fno-rtti)
     endif()
-    if(NOT ENABLE_EXCEPTIONS)
+    if(NOT DILIGENT_GLSLANG_ENABLE_EXCEPTIONS)
         add_compile_options(-fno-exceptions)
     endif()
     if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.0.0")
@@ -181,10 +181,10 @@ elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND NOT MSVC)
     add_compile_options(-Wall -Wuninitialized -Wunused -Wunused-local-typedefs
                         -Wunused-parameter -Wunused-value  -Wunused-variable)
     add_compile_options(-Wno-reorder)  # disable this from -Wall, since it happens all over.
-    if(NOT ENABLE_RTTI)
+    if(NOT DILIGENT_GLSLANG_ENABLE_RTTI)
         add_compile_options(-fno-rtti)
     endif()
-    if(NOT ENABLE_EXCEPTIONS)
+    if(NOT DILIGENT_GLSLANG_ENABLE_EXCEPTIONS)
         add_compile_options(-fno-exceptions)
     endif()
 
@@ -199,7 +199,7 @@ elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND NOT MSVC)
         endif()
     endif()
 elseif(MSVC)
-    if(NOT ENABLE_RTTI)
+    if(NOT DILIGENT_GLSLANG_ENABLE_RTTI)
         string(FIND "${CMAKE_CXX_FLAGS}" "/GR" MSVC_HAS_GR)
         if(MSVC_HAS_GR)
             string(REGEX REPLACE "/GR" "/GR-" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -207,7 +207,7 @@ elseif(MSVC)
             add_compile_options(/GR-) # Disable RTTI
         endif()
     endif()
-    if(ENABLE_EXCEPTIONS)
+    if(DILIGENT_GLSLANG_ENABLE_EXCEPTIONS)
         add_compile_options(/EHsc) # Enable Exceptions
 	else()
         string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}") # Try to remove default /EHsc cxx_flag
@@ -215,7 +215,7 @@ elseif(MSVC)
     endif()
 endif()
 
-if(ENABLE_GLSLANG_JS)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_JS)
     if(MSVC)
         add_compile_options(/Os /GR-)
     else()
@@ -300,14 +300,14 @@ endfunction()
 # glslang_pch() adds precompiled header rules to <target> for the pre-compiled
 # header file <pch>. As target_precompile_headers() was added in CMake 3.16,
 # this is a no-op if called on earlier versions of CMake.
-if(NOT CMAKE_VERSION VERSION_LESS "3.16" AND ENABLE_PCH)
+if(NOT CMAKE_VERSION VERSION_LESS "3.16" AND DILIGENT_GLSLANG_ENABLE_PCH)
     function(glslang_pch target pch)
         target_precompile_headers(${target} PRIVATE ${pch})
     endfunction()
 else()
     function(glslang_pch target pch)
     endfunction()
-    if(ENABLE_PCH)
+    if(DILIGENT_GLSLANG_ENABLE_PCH)
         message("Your CMake version is ${CMAKE_VERSION}. Update to at least 3.16 to enable precompiled headers to speed up incremental builds")
     endif()
 endif()
@@ -320,14 +320,14 @@ if(DILIGENT_GLSLANG_BUILD_EXTERNAL AND IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
 endif()
 
 if(NOT TARGET SPIRV-Tools-opt)
-    set(ENABLE_OPT OFF)
+    set(DILIGENT_GLSLANG_ENABLE_OPT OFF)
 endif()
 
-if(ENABLE_OPT)
+if(DILIGENT_GLSLANG_ENABLE_OPT)
     message(STATUS "optimizer enabled")
     add_definitions(-DENABLE_OPT=1)
 else()
-    if(ENABLE_HLSL)
+    if(DILIGENT_GLSLANG_ENABLE_HLSL)
         message(STATUS "spirv-tools not linked - illegal SPIRV may be generated for HLSL")
     endif()
     add_definitions(-DENABLE_OPT=0)
@@ -335,18 +335,18 @@ endif()
 
 add_subdirectory(glslang)
 add_subdirectory(OGLCompilersDLL)
-if(ENABLE_GLSLANG_BINARIES)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_BINARIES)
     add_subdirectory(StandAlone)
 endif()
 add_subdirectory(SPIRV)
-if(ENABLE_HLSL)
+if(DILIGENT_GLSLANG_ENABLE_HLSL)
     add_subdirectory(hlsl)
 endif()
-if(ENABLE_CTEST)
+if(DILIGENT_GLSLANG_ENABLE_CTEST)
     add_subdirectory(gtests)
 endif()
 
-if(ENABLE_CTEST AND BUILD_TESTING)
+if(DILIGENT_GLSLANG_ENABLE_CTEST AND BUILD_TESTING)
     # glslang-testsuite runs a bash script on Windows.
     # Make sure to use '-o igncr' flag to ignore carriage returns (\r).
     set(IGNORE_CR_FLAG "")
@@ -369,7 +369,7 @@ if(ENABLE_CTEST AND BUILD_TESTING)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Test/)
 endif()
 
-if(ENABLE_GLSLANG_INSTALL)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
     file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/glslang-config.cmake.in" [=[
         @PACKAGE_INIT@
         include("@PACKAGE_PATH_EXPORT_TARGETS@")

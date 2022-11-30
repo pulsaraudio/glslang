@@ -77,7 +77,7 @@ target_include_directories(SPIRV PUBLIC
 
 glslang_add_build_info_dependency(SPIRV)
 
-if (ENABLE_SPVREMAPPER)
+if (DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
     add_library(SPVRemapper ${LIB_TYPE} ${SPVREMAP_SOURCES} ${SPVREMAP_HEADERS})
     set_property(TARGET SPVRemapper PROPERTY FOLDER glslang)
     set_property(TARGET SPVRemapper PROPERTY POSITION_INDEPENDENT_CODE ON)
@@ -85,12 +85,12 @@ endif()
 
 if(WIN32 AND BUILD_SHARED_LIBS)
     set_target_properties(SPIRV PROPERTIES PREFIX "")
-    if (ENABLE_SPVREMAPPER)
+    if (DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
         set_target_properties(SPVRemapper PROPERTIES PREFIX "")
     endif()
 endif()
 
-if(ENABLE_OPT)
+if(DILIGENT_GLSLANG_ENABLE_OPT)
     target_include_directories(SPIRV
         PRIVATE ${spirv-tools_SOURCE_DIR}/include
         PRIVATE ${spirv-tools_SOURCE_DIR}/source
@@ -108,15 +108,15 @@ if(WIN32)
     source_group("Source" FILES ${SPVREMAP_SOURCES} ${SPVREMAP_HEADERS})
 endif()
 
-if(ENABLE_GLSLANG_INSTALL)
-    if (ENABLE_SPVREMAPPER)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
+    if (DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
         install(TARGETS SPVRemapper EXPORT glslang-targets)
     endif()
 
     install(TARGETS SPIRV EXPORT glslang-targets)
 
     # Backward compatibility
-    if (ENABLE_SPVREMAPPER)
+    if (DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
         file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/SPVRemapperTargets.cmake" "
             message(WARNING \"Using `SPVRemapperTargets.cmake` is deprecated: use `find_package(glslang)` to find glslang CMake targets.\")
 

@@ -41,7 +41,7 @@ if(WIN32)
     source_group("Source" FILES ${SOURCES})
 endif(WIN32)
 
-if(ENABLE_GLSLANG_INSTALL)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
     install(TARGETS OGLCompiler EXPORT glslang-targets)
 
     # Backward compatibility
@@ -56,4 +56,4 @@ if(ENABLE_GLSLANG_INSTALL)
     ")
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/OGLCompilerTargets.cmake" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
 
-endif(ENABLE_GLSLANG_INSTALL)
+endif(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)

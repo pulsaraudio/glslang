@@ -47,7 +47,7 @@ if(WIN32)
     source_group("Source" FILES ${SOURCES})
 endif()
 
-if(ENABLE_GLSLANG_INSTALL)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
     install(TARGETS OSDependent EXPORT glslang-targets)
 
     # Backward compatibility

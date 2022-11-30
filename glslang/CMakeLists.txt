@@ -39,7 +39,7 @@ else()
     message("unknown platform")
 endif()
 
-if(EMSCRIPTEN OR ENABLE_GLSLANG_JS)
+if(EMSCRIPTEN OR DILIGENT_GLSLANG_ENABLE_GLSLANG_JS)
     # May be enabled on non-Emscripten builds for binary-size testing.
     add_subdirectory(OSDependent/Web)
 endif()
@@ -110,7 +110,7 @@ set(MACHINEINDEPENDENT_HEADERS
     MachineIndependent/preprocessor/PpTokens.h
 )
 
-if(ENABLE_HLSL)
+if(DILIGENT_GLSLANG_ENABLE_HLSL)
     list(APPEND MACHINEINDEPENDENT_SOURCES
         HLSL/hlslAttributes.cpp
         HLSL/hlslParseHelper.cpp
@@ -199,7 +199,7 @@ endif()
 ################################################################################
 # install
 ################################################################################
-if(ENABLE_GLSLANG_INSTALL)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
     install(TARGETS glslang EXPORT glslang-targets)
     install(TARGETS MachineIndependent EXPORT glslang-targets)
     install(TARGETS GenericCodeGen EXPORT glslang-targets)

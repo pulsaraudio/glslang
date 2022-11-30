@@ -68,7 +68,7 @@ set(LIBRARIES
     SPIRV
     glslang-default-resource-limits)
 
-if(ENABLE_SPVREMAPPER)
+if(DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
     set(LIBRARIES ${LIBRARIES} SPVRemapper)
 endif()
 
@@ -85,13 +85,13 @@ target_include_directories(glslangValidator PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../External>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/External>)
 
-if(ENABLE_OPT)
+if(DILIGENT_GLSLANG_ENABLE_OPT)
     target_include_directories(glslangValidator
         PRIVATE ${spirv-tools_SOURCE_DIR}/include
     )
 endif()
 
-if(ENABLE_SPVREMAPPER)
+if(DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
     set(REMAPPER_SOURCES spirv-remap.cpp)
     add_executable(spirv-remap ${REMAPPER_SOURCES})
     set_property(TARGET spirv-remap PROPERTY FOLDER tools)
@@ -103,7 +103,7 @@ if(WIN32)
     source_group("Source" FILES ${SOURCES})
 endif()
 
-if(ENABLE_GLSLANG_INSTALL)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
     install(TARGETS glslangValidator EXPORT glslang-targets)
 
     # Backward compatibility
@@ -118,7 +118,7 @@ if(ENABLE_GLSLANG_INSTALL)
     ")
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/glslangValidatorTargets.cmake" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
 
-    if(ENABLE_SPVREMAPPER)
+    if(DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
         install(TARGETS spirv-remap EXPORT glslang-targets)
 
         # Backward compatibility

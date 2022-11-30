@@ -58,7 +58,7 @@ if(BUILD_TESTING)
             ${CMAKE_CURRENT_SOURCE_DIR}/VkRelaxed.FromFile.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/GlslMapIO.FromFile.cpp)
 
-        if(ENABLE_SPVREMAPPER)
+        if(DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
             set(TEST_SOURCES ${TEST_SOURCES}
                 ${CMAKE_CURRENT_SOURCE_DIR}/Remap.FromFile.cpp)
         endif()
@@ -68,7 +68,7 @@ if(BUILD_TESTING)
         glslang_pch(glslangtests ${CMAKE_CURRENT_SOURCE_DIR}/pch.h)
         set_property(TARGET glslangtests PROPERTY FOLDER tests)
         glslang_set_link_args(glslangtests)
-        if(ENABLE_GLSLANG_INSTALL)
+        if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
             install(TARGETS glslangtests EXPORT glslang-targets)
 
             # Backward compatibility
@@ -96,7 +96,7 @@ if(BUILD_TESTING)
                                    ${gmock_SOURCE_DIR}/include
                                    ${gtest_SOURCE_DIR}/include)
 
-        if(ENABLE_OPT)
+        if(DILIGENT_GLSLANG_ENABLE_OPT)
             target_include_directories(glslangtests
                 PRIVATE ${spirv-tools_SOURCE_DIR}/include
             )
@@ -106,11 +106,11 @@ if(BUILD_TESTING)
             glslang OSDependent OGLCompiler glslang
             SPIRV glslang-default-resource-limits)
 
-        if(ENABLE_SPVREMAPPER)
+        if(DILIGENT_GLSLANG_ENABLE_SPVREMAPPER)
             set(LIBRARIES ${LIBRARIES} SPVRemapper)
         endif()
 
-        if(ENABLE_HLSL)
+        if(DILIGENT_GLSLANG_ENABLE_HLSL)
             set(LIBRARIES ${LIBRARIES} HLSL)
         endif()
         target_link_libraries(glslangtests PRIVATE ${LIBRARIES} gmock)

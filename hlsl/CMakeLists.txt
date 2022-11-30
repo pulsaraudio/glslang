@@ -45,7 +45,7 @@ if(WIN32 AND BUILD_SHARED_LIBS)
     set_target_properties(HLSL PROPERTIES PREFIX "")
 endif()
 
-if(ENABLE_GLSLANG_INSTALL)
+if(DILIGENT_GLSLANG_ENABLE_GLSLANG_INSTALL)
     install(TARGETS HLSL EXPORT glslang-targets)
 
     file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/HLSLTargets.cmake" "

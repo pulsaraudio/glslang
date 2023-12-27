@@ -314,6 +314,8 @@ endif()
 
 if(DILIGENT_GLSLANG_BUILD_EXTERNAL AND IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/External)
 	find_host_package(Python3 COMPONENTS Interpreter REQUIRED)
+	set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND} CACHE INTERNAL "Python Interpreter found")
+	set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE} CACHE INTERNAL "Python Executable")
 
     # We depend on these for later projects, so they should come first.
     add_subdirectory(External)

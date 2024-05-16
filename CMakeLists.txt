@@ -326,7 +326,6 @@ if(NOT TARGET SPIRV-Tools-opt)
 endif()
 
 if(DILIGENT_GLSLANG_ENABLE_OPT)
-    message(STATUS "optimizer enabled")
     add_definitions(-DENABLE_OPT=1)
 else()
     if(DILIGENT_GLSLANG_ENABLE_HLSL)
